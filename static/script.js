@@ -1,41 +1,49 @@
-body {
-    background: #f5f5f5;
-    font-family: Arial, sans-serif;
-    text-align: center;
-    padding: 20px;
+let tg = window.Telegram.WebApp;
+tg.expand();
+
+// Получаем ID пользователя из Telegram WebApp
+const userId = tg.initDataUnsafe.user ? tg.initDataUnsafe.user.id : 0;
+
+const nameEl = document.getElementById("name");
+const cityEl = document.getElementById("city");
+const bioEl = document.getElementById("bio");
+
+const card = document.getElementById("card");
+const controls = document.getElementById("controls");
+const likeBtn = document.getElementById("likeBtn");
+const skipBtn = document.getElementById("skipBtn");
+
+let currentUser = null;
+
+async function loadNext() {
+    const res = await fetch(`/api/next/${userId}`);
+    const data = await res.json();
+
+    if (!data.found) {
+        nameEl.innerText = "Анкеты закончились!";
+        cityEl.innerText = "";
+        bioEl.innerText = "";
+        return;
+    }
+
+    currentUser = data.user;
+
+    nameEl.innerText = `${currentUser.name}, ${currentUser.age}`;
+    cityEl.innerText = currentUser.city;
+    bioEl.innerText = currentUser.bio;
+
+    card.classList.remove("hidden");
+    controls.classList.remove("hidden");
 }
 
-#app {
-    margin-top: 40px;
-}
+likeBtn.onclick = async () => {
+    await fetch(`/api/like/${userId}/${currentUser.user_id}`, { method: "POST" });
+    loadNext();
+};
 
-.card {
-    background: white;
-    border-radius: 20px;
-    padding: 20px;
-    margin-bottom: 20px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-}
+skipBtn.onclick = async () => {
+    await fetch(`/api/skip/${userId}/${currentUser.user_id}`, { method: "POST" });
+    loadNext();
+};
 
-.hidden {
-    display: none;
-}
-
-.btn {
-    padding: 15px 30px;
-    font-size: 18px;
-    border: none;
-    border-radius: 12px;
-    margin: 10px;
-    cursor: pointer;
-}
-
-.like {
-    background: #ff3b30;
-    color: white;
-}
-
-.skip {
-    background: #bbb;
-    color: white;
-}
+loadNext();
