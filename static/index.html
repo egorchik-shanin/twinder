@@ -1,1 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Twinder</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
 
+<div id="app">
+    <h1>Twinder</h1>
+
+    <div id="card" class="card hidden">
+        <h2 id="name"></h2>
+        <p id="city"></p>
+        <p id="bio"></p>
+    </div>
+
+    <div id="controls" class="hidden">
+        <button id="likeBtn" class="btn like">❤️ Лайк</button>
+        <button id="skipBtn" class="btn skip">💔 Пропустить</button>
+    </div>
+
+</div>
+
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
