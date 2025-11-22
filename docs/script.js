@@ -77,3 +77,45 @@ skipBtn.addEventListener("click", async () => {
     loadNext();
 });
 
+// Элементы профиля
+const profileScreen = document.getElementById("profile");
+const menuScreen = document.getElementById("menu");
+
+const pName = document.getElementById("p_name");
+const pCity = document.getElementById("p_city");
+const pBio = document.getElementById("p_bio");
+const pPhoto = document.getElementById("p_photo");
+
+const saveBtn = document.getElementById("saveProfile");
+const backBtn = document.getElementById("backToMenu");
+
+// Переход в профиль
+document.getElementById("btnProfile").addEventListener("click", () => {
+    menuScreen.classList.add("hidden");
+    profileScreen.classList.remove("hidden");
+
+    // подставляем данные если они сохранены
+    const myData = JSON.parse(localStorage.getItem("myProfile") || "{}");
+
+    pName.value = myData.name || "";
+    pCity.value = myData.city || "";
+    pBio.value = myData.bio || "";
+});
+
+// Сохранение
+saveBtn.addEventListener("click", () => {
+    const profileData = {
+        name: pName.value,
+        city: pCity.value,
+        bio: pBio.value
+    };
+
+    localStorage.setItem("myProfile", JSON.stringify(profileData));
+    alert("Анкета сохранена!");
+});
+
+// Назад
+backBtn.addEventListener("click", () => {
+    profileScreen.classList.add("hidden");
+    menuScreen.classList.remove("hidden");
+});
