@@ -5,6 +5,9 @@ const user = tg.initDataUnsafe.user;
 
 console.log("User info:", user);
 
+document.getElementById("username").innerText =
+    "Привет, " + user.first_name + "!";
+
 let tg = window.Telegram.WebApp;
 tg.expand();
 
