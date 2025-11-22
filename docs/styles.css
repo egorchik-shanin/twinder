@@ -71,6 +71,39 @@ body {
     margin-top: 20px;
 }
 
+#profile {
+    max-width: 500px;
+    margin: auto;
+    padding: 20px;
+    background: #111;
+    border-radius: 12px;
+}
+
+.profile-field {
+    margin: 15px 0;
+}
+
+.profile-field label {
+    display: block;
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+.profile-field input,
+.profile-field textarea {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 8px;
+    border: none;
+    outline: none;
+}
+
+.btn-alt {
+    background: #444;
+}
+
+
 .avatar {
     width: 120px;
     height: 120px;
