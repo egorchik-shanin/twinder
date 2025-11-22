@@ -16,6 +16,33 @@
         <button class="menu-btn" onclick="openProfile()">👤 Мой профиль</button>
     </div>
 
+    <div id="profile" class="hidden">
+    <h2>Моя анкета</h2>
+
+    <div class="profile-field">
+        <label>Имя:</label>
+        <input id="p_name" type="text" placeholder="Введите имя">
+    </div>
+
+    <div class="profile-field">
+        <label>Город:</label>
+        <input id="p_city" type="text" placeholder="Ваш город">
+    </div>
+
+    <div class="profile-field">
+        <label>О себе:</label>
+        <textarea id="p_bio" placeholder="Напишите пару слов"></textarea>
+    </div>
+
+    <div class="profile-field">
+        <label>Фото:</label>
+        <input id="p_photo" type="file" accept="image/*">
+    </div>
+
+    <button id="saveProfile" class="btn">💾 Сохранить</button>
+    <button id="backToMenu" class="btn btn-alt">⬅ Назад</button>
+</div>
+
     <!-- Экран поиска (Tinder-карточка) -->
     <div id="screen-search" class="screen hidden">
         <div id="card" class="card hidden">
