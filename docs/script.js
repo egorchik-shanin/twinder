@@ -1,3 +1,10 @@
+const tg = window.Telegram.WebApp;
+
+// Автоматические данные пользователя
+const user = tg.initDataUnsafe.user;
+
+console.log("User info:", user);
+
 let tg = window.Telegram.WebApp;
 tg.expand();
 
