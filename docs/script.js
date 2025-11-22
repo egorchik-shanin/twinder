@@ -1,59 +1,56 @@
 const tg = window.Telegram.WebApp;
+tg.expand();   // разворачиваем WebApp
 
-// Автоматические данные пользователя
-const user = tg.initDataUnsafe.user;
+// Получаем пользователя
+const user = tg.initDataUnsafe?.user;
 
-console.log("User info:", user);
+console.log("User:", user);
 
+// Показ имени
 document.getElementById("username").innerText =
-    "Привет, " + user.first_name + "!";
+    user ? "Привет, " + user.first_name + "!" : "Гость";
 
-let tg = window.Telegram.WebApp;
-tg.expand();
+// ID пользователя
+const userId = user?.id ?? 0;
 
-// Получаем ID пользователя из Telegram WebApp
-const userId = tg.initDataUnsafe.user ? tg.initDataUnsafe.user.id : 0;
-
+// Элементы интерфейса
 const nameEl = document.getElementById("name");
 const cityEl = document.getElementById("city");
 const bioEl = document.getElementById("bio");
 
 const card = document.getElementById("card");
 const controls = document.getElementById("controls");
+
 const likeBtn = document.getElementById("likeBtn");
 const skipBtn = document.getElementById("skipBtn");
 
 let currentUser = null;
 
+// Загружаем следующего пользователя
 async function loadNext() {
     const res = await fetch(`/api/next/${userId}`);
     const data = await res.json();
 
-    if (!data.found) {
-        nameEl.innerText = "Анкеты закончились!";
-        cityEl.innerText = "";
-        bioEl.innerText = "";
-        return;
-    }
+    currentUser = data;
 
-    currentUser = data.user;
-
-    nameEl.innerText = `${currentUser.name}, ${currentUser.age}`;
-    cityEl.innerText = currentUser.city;
-    bioEl.innerText = currentUser.bio;
+    nameEl.textContent = data.name;
+    cityEl.textContent = data.city;
+    bioEl.textContent = data.bio;
 
     card.classList.remove("hidden");
     controls.classList.remove("hidden");
 }
 
-likeBtn.onclick = async () => {
-    await fetch(`/api/like/${userId}/${currentUser.user_id}`, { method: "POST" });
-    loadNext();
-};
-
-skipBtn.onclick = async () => {
-    await fetch(`/api/skip/${userId}/${currentUser.user_id}`, { method: "POST" });
-    loadNext();
-};
-
 loadNext();
+
+// ЛАЙК
+likeBtn.addEventListener("click", async () => {
+    await fetch(`/api/like/${userId}/${currentUser.id}`);
+    loadNext();
+});
+
+// СКИП
+skipBtn.addEventListener("click", async () => {
+    await fetch(`/api/skip/${userId}/${currentUser.id}`);
+    loadNext();
+});
