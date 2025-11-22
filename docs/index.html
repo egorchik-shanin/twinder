@@ -1,29 +1,52 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Twinder</title>
     <meta charset="UTF-8">
+    <title>Twinder</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
 <div id="app">
-    <h1>Twinder</h1>
 
-    <div id="card" class="card hidden">
-        <h2 id="username"></h2>
-        <p id="city"></p>
-        <p id="bio"></p>
+    <!-- Главный экран -->
+    <div id="screen-home" class="screen">
+        <h1 class="logo">Twinder</h1>
+        <button class="menu-btn" onclick="openSearch()">🔎 Найти пару</button>
+        <button class="menu-btn" onclick="openProfile()">👤 Мой профиль</button>
     </div>
 
-    <div id="controls" class="hidden">
-        <button id="likeBtn" class="btn like">❤️ Лайк</button>
-        <button id="skipBtn" class="btn skip">💔 Пропустить</button>
+    <!-- Экран поиска (Tinder-карточка) -->
+    <div id="screen-search" class="screen hidden">
+        <div id="card" class="card hidden">
+            <h2 id="name"></h2>
+            <p id="city"></p>
+            <p id="bio"></p>
+        </div>
+
+        <div id="controls" class="controls hidden">
+            <button id="skipBtn" class="round-btn skip">❌</button>
+            <button id="likeBtn" class="round-btn like">❤️</button>
+        </div>
+
+        <button class="back-btn" onclick="goHome()">⬅ Назад</button>
+    </div>
+
+    <!-- Экран профиля -->
+    <div id="screen-profile" class="screen hidden">
+        <div class="profile-card">
+            <img id="avatar" class="avatar" src="" alt="">
+            <h2 id="profile-name"></h2>
+            <p id="profile-id"></p>
+        </div>
+
+        <button class="back-btn" onclick="goHome()">⬅ Назад</button>
     </div>
 
 </div>
 
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <script src="script.js"></script>
+
 </body>
 </html>
