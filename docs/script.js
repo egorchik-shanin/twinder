@@ -89,18 +89,10 @@ const pPhoto = document.getElementById("p_photo");
 const saveBtn = document.getElementById("saveProfile");
 const backBtn = document.getElementById("backToMenu");
 
-// Переход в профиль
-document.getElementById("btnProfile").addEventListener("click", () => {
-    menuScreen.classList.add("hidden");
-    profileScreen.classList.remove("hidden");
+function openProfile() {
+    show("screen-profile");
+}
 
-    // подставляем данные если они сохранены
-    const myData = JSON.parse(localStorage.getItem("myProfile") || "{}");
-
-    pName.value = myData.name || "";
-    pCity.value = myData.city || "";
-    pBio.value = myData.bio || "";
-});
 
 // Сохранение
 saveBtn.addEventListener("click", () => {
