@@ -1,14 +1,37 @@
 const tg = window.Telegram.WebApp;
-tg.expand();   // разворачиваем WebApp
+tg.expand(); // разворачиваем WebApp
 
 // Получаем пользователя
-const user = tg.initDataUnsafe?.user;
+const user = tg.initDataUnsafe.user;
 
 console.log("User:", user);
 
-// Показ имени
+function show(screen) {
+    document.querySelectorAll(".screen").forEach(s => s.classList.add("hidden"));
+    document.getElementById(screen).classList.remove("hidden");
+}
+
+function openSearch() {
+    show("screen-search");
+    loadNext();
+}
+
+function openProfile() {
+    show("screen-profile");
+
+    document.getElementById("profile-name").innerText = user.first_name;
+    document.getElementById("profile-id").innerText = "ID: " + user.id;
+    document.getElementById("avatar").src =
+        user.photo_url || "https://via.placeholder.com/120";
+}
+
+function goHome() {
+    show("screen-home");
+}
+
+// Покажем приветствие
 document.getElementById("username").innerText =
-    user ? "Привет, " + user.first_name + "!" : "Гость";
+    "Привет, " + user.first_name + "! 👋";
 
 // ID пользователя
 const userId = user?.id ?? 0;
@@ -20,7 +43,6 @@ const bioEl = document.getElementById("bio");
 
 const card = document.getElementById("card");
 const controls = document.getElementById("controls");
-
 const likeBtn = document.getElementById("likeBtn");
 const skipBtn = document.getElementById("skipBtn");
 
@@ -45,12 +67,13 @@ loadNext();
 
 // ЛАЙК
 likeBtn.addEventListener("click", async () => {
-    await fetch(`/api/like/${userId}/${currentUser.id}`);
+    await fetch(`/api/like/${userId}/${currentUser.user_id}`, { method: "POST" });
     loadNext();
 });
 
 // СКИП
 skipBtn.addEventListener("click", async () => {
-    await fetch(`/api/skip/${userId}/${currentUser.id}`);
+    await fetch(`/api/skip/${userId}/${currentUser.user_id}`, { method: "POST" });
     loadNext();
 });
+
