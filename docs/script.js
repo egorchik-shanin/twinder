@@ -26,14 +26,11 @@ function openSearch() {
 
 function openProfile() {
     show("screen-profile");
+}
 
-    // Заполнение профиля из Telegram
-    document.getElementById("profile-name").innerText = user.first_name;
-    document.getElementById("profile-id").innerText = "ID: " + user.id;
-    document.getElementById("avatar").src =
-        user.photo_url || "https://via.placeholder.com/120";
+function openEditProfile() {
+    show("screen-edit-profile");
 
-    // Подтяжка сохранённых данных
     const saved = JSON.parse(localStorage.getItem("myProfile") || "{}");
     pName.value = saved.name || "";
     pCity.value = saved.city || "";
