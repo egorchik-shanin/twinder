@@ -1,7 +1,7 @@
+const API_URL = "https://commemoratory-tussive-shannan.ngrok-free.dev";
+
 const tg = window.Telegram.WebApp;
 tg.expand(); // разворачиваем WebApp
-
-const API_URL = "https://commemoratory-tussive-shannan.ngrok-free.dev";
 
 // Получаем пользователя
 const user = tg.initDataUnsafe.user;
