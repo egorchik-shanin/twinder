@@ -1,6 +1,8 @@
 const tg = window.Telegram.WebApp;
 tg.expand(); // разворачиваем WebApp
 
+const API_URL = "https://commemoratory-tussive-shannan.ngrok-free.dev";
+
 // Получаем пользователя
 const user = tg.initDataUnsafe.user;
 
@@ -50,7 +52,7 @@ let currentUser = null;
 
 // Загружаем следующего пользователя
 async function loadNext() {
-    const res = await fetch(`/api/next/${userId}`);
+    const res = await fetch(`${API_URL}/api/next/${userId}`);
     const data = await res.json();
 
     currentUser = data;
@@ -67,13 +69,13 @@ loadNext();
 
 // ЛАЙК
 likeBtn.addEventListener("click", async () => {
-    await fetch(`/api/like/${userId}/${currentUser.user_id}`, { method: "POST" });
+    await fetch(`${API_URL}/api/like/${userId}/${currentUser.user_id}`, { method: "POST" });
     loadNext();
 });
 
 // СКИП
 skipBtn.addEventListener("click", async () => {
-    await fetch(`/api/skip/${userId}/${currentUser.user_id}`, { method: "POST" });
+    await fetch(`${API_URL}/api/skip/${userId}/${currentUser.user_id}`, { method: "POST" });
     loadNext();
 });
 
