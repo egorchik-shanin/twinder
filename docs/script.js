@@ -1,13 +1,19 @@
+// ====== НАСТРОЙКИ ======
 const API_URL = "https://commemoratory-tussive-shannan.ngrok-free.dev";
 
 const tg = window.Telegram.WebApp;
-tg.expand(); // разворачиваем WebApp
+tg.expand(); // Разворачиваем WebApp
 
-// Получаем пользователя
+// ====== ДАННЫЕ ПОЛЬЗОВАТЕЛЯ ======
 const user = tg.initDataUnsafe.user;
+console.log("TG User:", user);
 
-console.log("User:", user);
+document.getElementById("username").innerText =
+    `Привет, ${user.first_name}! 👋`;
 
+const userId = user?.id ?? 0;
+
+// ====== ФУНКЦИИ ПЕРЕКЛЮЧЕНИЯ ЭКРАНОВ ======
 function show(screen) {
     document.querySelectorAll(".screen").forEach(s => s.classList.add("hidden"));
     document.getElementById(screen).classList.remove("hidden");
@@ -21,24 +27,24 @@ function openSearch() {
 function openProfile() {
     show("screen-profile");
 
+    // Заполнение профиля из Telegram
     document.getElementById("profile-name").innerText = user.first_name;
     document.getElementById("profile-id").innerText = "ID: " + user.id;
     document.getElementById("avatar").src =
         user.photo_url || "https://via.placeholder.com/120";
+
+    // Подтяжка сохранённых данных
+    const saved = JSON.parse(localStorage.getItem("myProfile") || "{}");
+    pName.value = saved.name || "";
+    pCity.value = saved.city || "";
+    pBio.value = saved.bio || "";
 }
 
 function goHome() {
     show("screen-home");
 }
 
-// Покажем приветствие
-document.getElementById("username").innerText =
-    "Привет, " + user.first_name + "! 👋";
-
-// ID пользователя
-const userId = user?.id ?? 0;
-
-// Элементы интерфейса
+// ====== ЭЛЕМЕНТЫ ИНТЕРФЕЙСА ======
 const nameEl = document.getElementById("name");
 const cityEl = document.getElementById("city");
 const bioEl = document.getElementById("bio");
@@ -50,51 +56,51 @@ const skipBtn = document.getElementById("skipBtn");
 
 let currentUser = null;
 
-// Загружаем следующего пользователя
+// ====== ЗАГРУЗКА СЛЕДУЮЩЕГО ПОЛЬЗОВАТЕЛЯ ======
 async function loadNext() {
-    const res = await fetch(`${API_URL}/api/next/${userId}`);
-    const data = await res.json();
+    try {
+        const res = await fetch(`${API_URL}/api/next/${userId}`);
+        const data = await res.json();
 
-    currentUser = data;
+        currentUser = data;
 
-    nameEl.textContent = data.name;
-    cityEl.textContent = data.city;
-    bioEl.textContent = data.bio;
+        nameEl.textContent = data.name;
+        cityEl.textContent = data.city;
+        bioEl.textContent = data.bio;
 
-    card.classList.remove("hidden");
-    controls.classList.remove("hidden");
+        card.classList.remove("hidden");
+        controls.classList.remove("hidden");
+
+    } catch (e) {
+        console.error("Ошибка загрузки:", e);
+    }
 }
 
-loadNext();
-
-// ЛАЙК
+// ====== ЛАЙК ======
 likeBtn.addEventListener("click", async () => {
-    await fetch(`${API_URL}/api/like/${userId}/${currentUser.user_id}`, { method: "POST" });
+    await fetch(`${API_URL}/api/like/${userId}/${currentUser.user_id}`, {
+        method: "POST"
+    });
+
     loadNext();
 });
 
-// СКИП
+// ====== СКИП ======
 skipBtn.addEventListener("click", async () => {
-    await fetch(`${API_URL}/api/skip/${userId}/${currentUser.user_id}`, { method: "POST" });
+    await fetch(`${API_URL}/api/skip/${userId}/${currentUser.user_id}`, {
+        method: "POST"
+    });
+
     loadNext();
 });
 
-// Элементы профиля
-const profileScreen = document.getElementById("profile");
-const menuScreen = document.getElementById("menu");
-
+// ====== ПРОФИЛЬ ======
 const pName = document.getElementById("p_name");
 const pCity = document.getElementById("p_city");
 const pBio = document.getElementById("p_bio");
-const pPhoto = document.getElementById("p_photo");
 
 const saveBtn = document.getElementById("saveProfile");
 const backBtn = document.getElementById("backToMenu");
-
-function openProfile() {
-    show("screen-profile");
-}
-
 
 // Сохранение
 saveBtn.addEventListener("click", () => {
@@ -109,7 +115,4 @@ saveBtn.addEventListener("click", () => {
 });
 
 // Назад
-backBtn.addEventListener("click", () => {
-    profileScreen.classList.add("hidden");
-    menuScreen.classList.remove("hidden");
-});
+backBtn.addEventListener("click", goHome);
